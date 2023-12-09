@@ -239,9 +239,9 @@ func displayResult(final: PlayResult) -> Void{
     print("")
     print("--///!!!! --- [ SELECCIONES REALIZADAS ] --- !!!!///--")
     print("")
-    print("++++++"+final.ganador+"++++++++")
+    print("++++++   "+final.ganador+"   ++++++++")
     print("")
-    print("******"+final.resultado+"******")
+    print("******   "+final.resultado+"   ******")
     print("")
     print("")
     
