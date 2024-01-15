@@ -7,6 +7,10 @@
 
 import Foundation
 
+typealias PlayResult = (ganador : String , resultado : String) // ES UNA TUPLA
+typealias ChoicePlays = (userChoice : GameChoice, cpuChoice: GameChoice)
+
+
 enum GameChoice {
     case Rock
     case Paper
@@ -16,7 +20,12 @@ enum GameChoice {
     case Quit
 }
 
-typealias PlayResult = (ganador : String , resultado : String) // ES UNA TUPLA
+// Tuplas de combinaciones ganadoras
+let winningPlays : [ChoicePlays] = [(GameChoice.Rock, GameChoice.Scissors), (GameChoice.Rock, GameChoice.Lizard), (GameChoice.Paper, GameChoice.Rock),(GameChoice.Paper, GameChoice.Spock),(GameChoice.Scissors, GameChoice.Paper),(GameChoice.Scissors, GameChoice.Lizard),(GameChoice.Lizard, GameChoice.Paper),(GameChoice.Lizard, GameChoice.Spock),(GameChoice.Spock, GameChoice.Scissors),(GameChoice.Spock, GameChoice.Rock) ]
+
+
+let drawPlays : [ChoicePlays] = [(GameChoice.Rock, GameChoice.Rock), (GameChoice.Paper, GameChoice.Paper),(GameChoice.Scissors, GameChoice.Scissors),(GameChoice.Lizard, GameChoice.Lizard),(GameChoice.Spock, GameChoice.Spock)]
+
 
 main()
 
@@ -102,17 +111,14 @@ func readUserChoice() -> GameChoice {
 }
 
 func isExit(choice: GameChoice)->Bool{
-    if choice == .Quit{
-        return true
-    }else{
-        return false
-    }
-    
+    return choice == .Quit
 }
 
 func generateComputerChoice()->GameChoice{
     let eleccion = Int.random(in: 0...5)
     let cpuChoice: GameChoice
+    
+    // cpuChoice = GameChoice.all
     
     if eleccion == 0 {
         cpuChoice =  .Rock
@@ -138,6 +144,29 @@ func evaluateMovements(userChoice: GameChoice, cpuChoice: GameChoice) -> (PlayRe
     let final : (String,String)
     var ganador = ""
     var textoGanador = ""
+    
+    let play : ChoicePlays = (userChoice,cpuChoice)
+    
+    if winningPlays.contains(where: {$0 == play}){
+        
+        ganador = "VICTORIA"
+        textoGanador = "\(play.userChoice) gana a \(play.cpuChoice)"
+        
+        
+    }else if drawPlays.contains(where: {$0 == play}){
+        
+        ganador = "EMPATE"
+        textoGanador = "\(play.userChoice) empata con \(play.cpuChoice)"
+        
+    }
+    else{
+        
+        ganador = "DERROTA"
+        textoGanador = "\(play.cpuChoice) gana a \(play.userChoice)"
+        
+    }
+    
+    /*
     
     if userChoice == .Paper {
         
@@ -229,6 +258,8 @@ func evaluateMovements(userChoice: GameChoice, cpuChoice: GameChoice) -> (PlayRe
             ganador = "EMPATE"
             textoGanador = "Batalla de spocks en el espacio tiempo"}
     }
+     
+     */
     // EVALUAR QUIEN HA GANADO Y COMO LO HIZO
     final = (ganador, textoGanador)
     return final
